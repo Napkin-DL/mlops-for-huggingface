@@ -48,31 +48,10 @@ def get_step_results(execution, test_steps_list):
                 val = metadata_key_name['Arn'].split('/')[-2]+"/" + metadata_key_name['Arn'].split('/')[-1]
             step_job_names[key] = val
     
-    pprint(step_job_names)
+    # pprint(step_job_names)
     
     for step_obj in test_steps_list:
-        step_name = step_obj.step_type.value
-        if step_name == 'Processing':
-            step_job_name = step_job_names[step_name]
-            res = client.describe_processing_job(ProcessingJobName=step_job_name)
-            print(f"{step_name} : {step_job_name}")
-            pprint(res['ProcessingOutputConfig']['Outputs'])
-            print("\n --------------------------------------------------\n")
-        elif step_name == 'Training':
-            step_job_name = step_job_names[step_name]
-            res = client.describe_training_job(TrainingJobName=step_job_name)
-            print(f"{step_name} : {step_job_name}")
-            print("S3ModelArtifacts : {}".format(res['ModelArtifacts']['S3ModelArtifacts']))
-            print("\n --------------------------------------------------\n")
-        elif step_name == 'Condition':
-            step_job_name = step_job_names[step_name]
-            print(f"{step_name} : {step_job_name}")
-            print("\n --------------------------------------------------\n")
-            
-
-    if 'RegisterModel' in step_job_names.keys():
-        step_job_name = step_job_names['RegisterModel']
-        print(f"RegisterModel : {step_job_name}")
+        pprint(step_obj)
         print("\n --------------------------------------------------\n")
 
             

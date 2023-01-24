@@ -142,11 +142,11 @@ def get_pipeline(
     sagemaker_project_arn=None,
     role=None,
     default_bucket=None,
-    model_package_group_name="AbalonePackageGroup",
-    pipeline_name="AbalonePipeline",
-    base_job_prefix="Abalone",
+    model_package_group_name="TextClsPackageGroup",
+    pipeline_name="TextclsPipeline",
+    base_job_prefix="Textcls",
     processing_instance_type="ml.m5.xlarge",
-    training_instance_type="ml.m5.xlarge",
+    training_instance_type="ml.c5.9xlarge",
 ):
     """Gets a SageMaker ML Pipeline instance working with on abalone data.
 
@@ -193,13 +193,11 @@ def get_pipeline(
     
     # parameters for pipeline execution
     processing_instance_count = ParameterInteger(name="ProcessingInstanceCount", default_value=1)
-    processing_instance_type = "ml.m5.xlarge"
-    training_instance_type = "ml.g5.xlarge"
     training_instance_count = ParameterInteger(name="TrainingInstanceCount", default_value=1)
+    processing_instance_type = "ml.m5.xlarge"
+    training_instance_type = "ml.c5.9xlarge"
     model_approval_status = ParameterString(name="ModelApprovalStatus", default_value="PendingManualApproval")
-    model_approval_status = ParameterString(
-        name="ModelApprovalStatus", default_value="PendingManualApproval"
-    )
+
 
 
     # processing step for feature engineering
@@ -310,8 +308,8 @@ def get_pipeline(
         model_data=step_train.properties.ModelArtifacts.S3ModelArtifacts,
         content_types=["application/json"],
         response_types=["application/json"],
-        inference_instances=["ml.m5.xlarge", "ml.m5.2xlarge"], # instance types recommended by data scientist to be used for real-time endpoints
-        transform_instances=["ml.m5.xlarge", "ml.m5.2xlarge"], # instance types recommended by data scientist to be used for batch transform jobs
+        inference_instances=["ml.c5.9xlarge"], # instance types recommended by data scientist to be used for real-time endpoints
+        transform_instances=["ml.m5.12xlarge", "ml.c5.9xlarge"], # instance types recommended by data scientist to be used for batch transform jobs
         model_package_group_name=model_package_group_name,
         approval_status=model_approval_status,
         image_uri=inf_image_uri
